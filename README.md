@@ -16,6 +16,7 @@ In order to win, you have to accomplish these 2 tasks:
 - Find all cards that match together (8 successful moves).
 - Finish before the specified time above!
   - You can change the time easily, if you're willing to make things more fun!
+  
 That's all you need to do!
 
 Keep it mind that if the time is up and you didn't find all cards, you will _lose_ :disappointed:
