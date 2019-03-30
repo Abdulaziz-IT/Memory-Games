@@ -1,10 +1,11 @@
 //Compare between 2 cards
 function checkCards(elem) {
-    if (playable && elem.className === "card") {
-        elem.className += " open show";
+    if (playable && elem.classList.length === 1) {
+        elem.classList.add("open");
+        elem.classList.add("show");
         if (openedCards.length !== 0) {
             playable = false;
-            if (openedCards[0].getElementsByClassName("fa")[0].className.split(" ")[1] === elem.getElementsByClassName("fa")[0].className.split(" ")[1]) {
+            if (openedCards[0].firstElementChild.classList[1] === elem.firstElementChild.classList[1]) {
                 successMoves++;
                 matched(elem);
                 if (successMoves == 8) {
@@ -15,8 +16,8 @@ function checkCards(elem) {
                     unMatched(elem)
                 }, 500);
             }
-            moves.innerHTML = Number(moves.innerHTML) + 1;
-            if (Number(moves.innerHTML) === 12 || Number(moves.innerHTML) === 20) {
+            moves.textContent = Number(moves.textContent) + 1;
+            if (Number(moves.textContent) === 12 || Number(moves.textContent) === 20) {
                 const stars = document.getElementsByClassName("stars")[0];
                 stars.children[numOfStars - 1].style.display = "none";
                 numOfStars--;
@@ -29,16 +30,18 @@ function checkCards(elem) {
 
 //Change classes of matches cards and pop them.
 function matched(elem) {
-    openedCards[0].className = "card match";
-    elem.className = "card match";
+    openedCards[0].classList.remove("open", "show");    
+    elem.classList.remove("open", "show");
+    openedCards[0].classList.add("match");
+    elem.classList.add("match");
     openedCards.pop();
     playable = true;
 }
 
 //Close the un-matched cards.
 function unMatched(elem) {
-    openedCards[0].className = "card";
-    elem.className = "card";
+    openedCards[0].classList.remove("open", "show");
+    elem.classList.remove("open", "show");
     openedCards.pop();
     playable = true;
 }
@@ -46,9 +49,9 @@ function unMatched(elem) {
 //Display an alert after winning, and stop the timing then ask if the user wants to play again.
 function won() {
     clearInterval(timer);
-    const finishTime = Number(min.innerHTML) * 60 + Number(sec.innerHTML);
+    const finishTime = Number(min.textContent) * 60 + Number(sec.textContent);
     const message = `You have successfully finished the game in ${finishTime} seconds!
-You have made ${Number(moves.innerHTML)} moves, and kept ${numOfStars} star(s)!
+You have made ${Number(moves.textContent)} moves, and kept ${numOfStars} star(s)!
 Woud you like to play again?!`;
     if (confirm(message)) {
         restartGame();
@@ -116,25 +119,25 @@ function setTimer() {
     const minTimer = Math.floor(time / 60);
     const secTimer = time % 60;
 
-    min.innerHTML = minTimer;
-    sec.innerHTML = secTimer;
+    min.textContent = minTimer;
+    sec.textContent = secTimer;
     timer = setInterval(startTimer, 1000);
 }
 
 //Decrease 1 second everytime this function is used.
 function startTimer() {
-    if (sec.innerHTML == "0" && min.innerHTML == "0") {
+    if (sec.textContent == "0" && min.textContent == "0") {
         clearInterval(timer);
         if (successMoves == 8) {
             setTimeout(won, 500);
         } else {
             setTimeout(lost, 500);
         }
-    } else if (sec.innerHTML == "0") {
-        min.innerHTML = Number(min.innerHTML) - 1;
-        sec.innerHTML = Number(59);
+    } else if (sec.textContent == "0") {
+        min.textContent = Number(min.textContent) - 1;
+        sec.textContent = Number(59);
     } else {
-        sec.innerHTML = Number(sec.innerHTML) - 1;
+        sec.textContent = Number(sec.textContent) - 1;
     }
 }
 
@@ -146,7 +149,7 @@ function restartGame() {
     playable = true;
     successMoves = 0;
     numOfStars = 3;
-    moves.innerHTML = 0;
+    moves.textContent = 0;
 
     //Re-creating the stars.
     const stars = document.getElementsByClassName("stars")[0];
