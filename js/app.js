@@ -47,7 +47,10 @@ function unMatched(elem) {
 function won() {
     clearInterval(timer);
     const finishTime = Number(min.innerHTML) * 60 + Number(sec.innerHTML);
-    if (confirm("You have successfully finished the game in " + finishTime + " seconds!\nYou have made " + Number(moves.innerHTML) + " moves, and kept " + numOfStars + " star(s)!\nWould you like to play again?!")) {
+    const message = `You have successfully finished the game in ${finishTime} seconds!
+You have made ${Number(moves.innerHTML)} moves, and kept ${numOfStars} star(s)!
+Woud you like to play again?!`;
+    if (confirm(message)) {
         restartGame();
     } else {
         playable = false;
@@ -56,7 +59,10 @@ function won() {
 
 //Display an alert after losing, and stop the timing then ask if the user wants to play again.
 function lost() {
-    if (confirm("You lost the game :(\nEven though, you got " + successMoves + " move(s) correct.\nWould you like to play again?!")) {
+    const message = `You lost the game :(
+Even though, you got ${successMoves} move(s) correct.
+Would you like to play again?!`;
+    if (confirm(message)) {
         restartGame();
     } else {
         playable = false;
