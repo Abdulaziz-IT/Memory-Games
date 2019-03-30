@@ -1,36 +1,40 @@
 //Compare between 2 cards
-function checkCards(elem) {
-    if (playable && elem.classList.length === 1) {
-        elem.classList.add("open");
-        elem.classList.add("show");
-        if (openedCards.length !== 0) {
-            playable = false;
-            if (openedCards[0].firstElementChild.classList[1] === elem.firstElementChild.classList[1]) {
-                successMoves++;
-                matched(elem);
-                if (successMoves == 8) {
-                    setTimeout(won, 500);
+function checkCards(evt) {
+    const elem = evt.target;
+    console.log(elem);
+    if (elem.nodeName === "LI") {
+        if (playable && elem.classList.length === 1) {
+            elem.classList.add("open");
+            elem.classList.add("show");
+            if (openedCards.length !== 0) {
+                playable = false;
+                if (openedCards[0].firstElementChild.classList[1] === elem.firstElementChild.classList[1]) {
+                    successMoves++;
+                    matched(elem);
+                    if (successMoves == 8) {
+                        setTimeout(won, 500);
+                    }
+                } else {
+                    setTimeout(function () {
+                        unMatched(elem)
+                    }, 500);
+                }
+                moves.textContent = Number(moves.textContent) + 1;
+                if (Number(moves.textContent) === 12 || Number(moves.textContent) === 20) {
+                    const stars = document.getElementsByClassName("stars")[0];
+                    stars.children[numOfStars - 1].style.display = "none";
+                    numOfStars--;
                 }
             } else {
-                setTimeout(function () {
-                    unMatched(elem)
-                }, 500);
+                openedCards.push(elem);
             }
-            moves.textContent = Number(moves.textContent) + 1;
-            if (Number(moves.textContent) === 12 || Number(moves.textContent) === 20) {
-                const stars = document.getElementsByClassName("stars")[0];
-                stars.children[numOfStars - 1].style.display = "none";
-                numOfStars--;
-            }
-        } else {
-            openedCards.push(elem);
         }
     }
 }
 
 //Change classes of matches cards and pop them.
 function matched(elem) {
-    openedCards[0].classList.remove("open", "show");    
+    openedCards[0].classList.remove("open", "show");
     elem.classList.remove("open", "show");
     openedCards[0].classList.add("match");
     elem.classList.add("match");
@@ -173,12 +177,8 @@ const sec = document.getElementsByClassName("sec")[0];
 
 restartButton.addEventListener("click", restartGame);
 
-//Add an event listener on each card that is going to be clicked.
-for (let index = 0; index < cardsElements.length; index++) {
-    cardsElements[index].addEventListener("click", function () {
-        checkCards(this);
-    });
-}
+//Add an event listener on the deck (Event Delegation is applied here).
+deck.addEventListener("click", checkCards);
 
 //Start the game
 let cards = getCardsToArray();
