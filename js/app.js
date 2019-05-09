@@ -1,11 +1,9 @@
 //Compare between 2 cards
 function checkCards(evt) {
     const elem = evt.target;
-    console.log(elem);
     if (elem.nodeName === "LI") {
         if (playable && elem.classList.length === 1) {
-            elem.classList.add("open");
-            elem.classList.add("show");
+            elem.classList.add("open", "show");            
             if (openedCards.length !== 0) {
                 playable = false;
                 if (openedCards[0].firstElementChild.classList[1] === elem.firstElementChild.classList[1]) {
@@ -92,8 +90,9 @@ function shuffle(array) {
     return array;
 }
 
-//Get the HTMLCollection to an array.
+//Convert the HTMLCollection to an array.
 function getCardsToArray() {
+    const cardsElements = document.getElementsByClassName("card");
     const arr = [];
     for (let index = 0; index < cardsElements.length; index++) {
         arr.push(cardsElements[index]);
@@ -104,16 +103,12 @@ function getCardsToArray() {
 
 //Display the structure of the deck.
 function cleanCards() {
-    for (let index = 0; index < cards.length; index++) {
-        cards[index].className = "card";
-    }
     shuffle(cards);
     while (deck.firstChild) {
         deck.removeChild(deck.firstChild);
     }
     for (let index = 0; index < cards.length; index++) {
-        const element = cards[index];
-        deck.appendChild(element);
+        deck.appendChild(cards[index]);
     }
 }
 
@@ -149,6 +144,9 @@ function startTimer() {
 function restartGame() {
     clearInterval(timer);
     cleanCards();
+    for (let index = 0; index < cards.length; index++) {
+        cards[index].className = "card";        
+    }
     setTimer();
     playable = true;
     successMoves = 0;
@@ -168,7 +166,6 @@ let successMoves = 0;
 let numOfStars = 3;
 const deck = document.getElementsByClassName("deck")[0];
 const openedCards = [];
-const cardsElements = document.getElementsByClassName("card");
 let timer;
 let playable = true;
 const restartButton = document.getElementsByClassName("restart")[0];
