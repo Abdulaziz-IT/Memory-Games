@@ -39,4 +39,4 @@ To the number of seconds you want.
 ## Can I play now?!
 
 You surely can!
-Go ahead and click [HERE](https://abdulaziz-it.github.io/Memory-Games-Project-2-FEND-/)!
+Go ahead and click [HERE](https://abdulaziz-it.github.io/Memory-Games/)!
